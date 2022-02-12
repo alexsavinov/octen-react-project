@@ -1,37 +1,27 @@
-// import { AxiosResponse } from 'axios';
 import React, {FC, useEffect} from 'react';
-// import {Routes, Route, Link, Navigate} from "react-router-dom";
+import {Routes, Route, Link, Navigate} from "react-router-dom";
+import {MoviesPage} from "./pages";
+import {Header, MoviesList, MovieInfo, GenresList, UserInfo} from "./components";
 
-// import {movieService} from './services';
-// import {IMovie} from './interfaces';
-import {useAppDispatch, useAppSelector} from "./hooks";
-import {getAllMovies, getMovie} from "./store";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App: FC = () => {
-    // const [ff, setFf] = useState<AxiosResponse | null>(null);
-    // useEffect(() => {
-    //     // setFf(movieService.getMovies());
-    //     movieService.getMovies().then(data => setFf(data));
-    //     console.log(ff);
-    // }, []);
-
-    const {movies} = useAppSelector(state => state.movies);
-    const {movie} = useAppSelector(state => state.movie);
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        dispatch(getAllMovies());
-        dispatch(getMovie(634649));
-    }, [])
-
-
     return (
-        <div>
-            {/*<div>{JSON.stringify(movies)}</div>*/}
-            <div>{JSON.stringify(movie)}</div>
-            <div>{JSON.stringify(movie.adult)}</div>
-            {/*<div>{movie.adult}</div>*/}
-        </div>
+        <Routes>
+            <Route path={'/'} element={<MoviesPage/>}>
+                <Route path={'header'} element={<Header/>}/>
+
+                <Route index element={<Navigate to={'movies'}/>}/>
+
+                <Route path={'movies'} element={<MoviesList/>}/>
+                <Route path={'movies/:id'} element={<MovieInfo/>}/>
+                <Route path={'genres'} element={<GenresList/>}>
+                    <Route path={':genreId'} element={<MoviesList/>}/>
+                </Route>
+                <Route path={'user'} element={<UserInfo/>}/>
+                {/*<Route path={'genres/:genreId'} element={<Navigate replace to="/" />}/>*/}
+            </Route>
+        </Routes>
     );
 }
 
