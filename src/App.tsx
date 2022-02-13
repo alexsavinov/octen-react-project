@@ -1,9 +1,9 @@
-import React, {FC, useEffect} from 'react';
-import {Routes, Route, Link, Navigate} from "react-router-dom";
-import {MoviesPage} from "./pages";
-import {Header, MoviesList, MovieInfo, GenresList, UserInfo} from "./components";
-
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React, {FC} from 'react';
+import {Routes, Route, Navigate} from 'react-router-dom';
+
+import {Header, MoviesList, MovieInfo, GenresList, UserInfo} from './components';
+import {MoviesPage} from './pages';
 
 const App: FC = () => {
     return (
@@ -19,7 +19,6 @@ const App: FC = () => {
                     <Route path={':genreId'} element={<MoviesList/>}/>
                 </Route>
                 <Route path={'user'} element={<UserInfo/>}/>
-                {/*<Route path={'genres/:genreId'} element={<Navigate replace to="/" />}/>*/}
             </Route>
         </Routes>
     );

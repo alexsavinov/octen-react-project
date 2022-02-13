@@ -3,8 +3,6 @@ import {IGenre, IMovie} from '../../interfaces';
 import {movieService} from '../../services';
 import {ReducerAction} from "react";
 
-// import any = jasmine.any;
-
 interface IMovieState {
     movieId: number | null;
     page: number;
@@ -14,10 +12,9 @@ interface IMovieState {
     genre: IGenre | null;
     total_pages: number;
     total_results: number;
-    // status: 'idle' | 'pending' | 'succeeded' | 'failed';
     status: string | null;
     error: string | null;
-    // update: IMovie | null
+    isDarkMode: boolean;
 }
 
 const initialState: IMovieState = {
@@ -30,8 +27,8 @@ const initialState: IMovieState = {
     movies: [],
     genres: [],
     status: 'idle',
-    error: null
-    // update: null
+    error: null,
+    isDarkMode: false
 }
 
 interface IParams {
@@ -42,9 +39,6 @@ interface IParams {
 export const getAllMovies = createAsyncThunk(
     'movieSlice/getAllMovies',
     async (data: IParams, {dispatch}) => {
-        // const res = await movieService.getMovies(data.pageId, data.genreId);
-        // console.log(res);
-        // console.log('data', data);
         const {
             data: {
                 results,
@@ -56,7 +50,6 @@ export const getAllMovies = createAsyncThunk(
         dispatch(setMovies({movies: results, page, total_pages, total_results}));
         if (data.genreId) {
             // console.log('data.genreId', data.genreId);
-
             dispatch(setGenre({genre: <IGenre>{id: data.genreId, name: ''}}));
         }
     }
@@ -83,9 +76,7 @@ export const setMovieThunk = createAsyncThunk(
 export const getAllGenres = createAsyncThunk(
     'movieSlice/getAllGenres',
     async (_, {dispatch}) => {
-        // const {data: {results}} = await movieService.getGenres();
         const {data: {genres}} = await movieService.getGenres();
-
         // console.log(genres);
         // const {data: {results, page, total_pages, total_results}} = await movieService.getMovies(pageId);
         // console.log('page', page);
@@ -94,22 +85,14 @@ export const getAllGenres = createAsyncThunk(
     }
 )
 
-// export const setPageThunk = createAsyncThunk(
-//     'movieSlice/setPageThunk',
-//     async (page: number, {dispatch}) => {
-//         // const {data} = await movieService.getMovieDetailsById(movieId);
-//         console.log('setPageThunk', page);
-//         dispatch(setPage({page}));
-//     }
-// )
-
-// export const addCarThunk = createAsyncThunk<void,{ car:IMovie }>(
-//     'movieSlice/addCarThunk',
-//     async ({movie},{dispatch} ) => {
-//         // const {data} = await movieService.create(car);
-//         // dispatch(addCar({car: data}))
-//     }
-// )
+export const setDarkModeThunk = createAsyncThunk(
+    'movieSlice/setDarkModeThunk',
+    async (isDarkMode: boolean, {dispatch}) => {
+        // const {data} = await movieService.getMovieDetailsById(movieId);
+        // console.log('setDarkModeThunk', isDarkMode);
+        dispatch(setDarkMode({isDarkMode}));
+    }
+)
 
 const movieSlice = createSlice({
     name: 'movieSlice',
@@ -125,7 +108,7 @@ const movieSlice = createSlice({
         },
         setMovie: (state, action: PayloadAction<{ movie: IMovie }>) => {
             state.movie = action.payload.movie;
-            console.log('setMovie state.movie', state.movie);
+            // console.log('setMovie state.movie', state.movie);
         },
         setPage: (state, action: PayloadAction<{ page: number }>) => {
             state.page = 5;
@@ -148,9 +131,9 @@ const movieSlice = createSlice({
             // console.log('setPage state.page', state.page);
             // console.log('setPage action.payload.page', action.payload.page);
         },
-        // addCar: (state, action: PayloadAction<{ car: IMovie }>) => {
-        //     state.cars.push(action.payload.car)
-        // }
+        setDarkMode: (state, action: PayloadAction<{ isDarkMode: boolean }>) => {
+            state.isDarkMode = action.payload.isDarkMode;
+        },
     },
     extraReducers: {
         [getAllMovies.pending.toString()]: (state: any, action: PayloadAction<any>) => {
@@ -176,18 +159,6 @@ const movieSlice = createSlice({
         [getMovie.rejected.toString()]: (state: any, action: PayloadAction<any>) => {
             state.status = 'rejected';
             state.error = action.payload;
-        },
-        [getAllGenres.pending.toString()]: (state: any, action: PayloadAction<any>) => {
-            state.status = 'loading';
-            state.error = null;
-        },
-        [getAllGenres.fulfilled.toString()]: (state: any, action: PayloadAction<any>) => {
-            state.status = 'resolved';
-            // state.cars = action.payload;
-        },
-        [getAllGenres.rejected.toString()]: (state: any, action: PayloadAction<any>) => {
-            state.status = 'rejected';
-            state.error = action.payload;
         }
     }
 });
@@ -195,4 +166,4 @@ const movieSlice = createSlice({
 const movieReducer = movieSlice.reducer;
 
 export default movieReducer
-export const {setMovies, setMovie, setPage, setGenres, setGenre} = movieSlice.actions;
+export const {setMovies, setMovie, setPage, setGenres, setGenre, setDarkMode} = movieSlice.actions;

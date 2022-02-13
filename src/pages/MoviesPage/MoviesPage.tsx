@@ -1,26 +1,18 @@
-import {Link, NavLink, Outlet, useNavigate} from "react-router-dom";
-import {Header} from "../../components";
+import {Outlet} from 'react-router-dom';
 
-const css = {header: '', outlet: '', footer: ''}; // TODO: css
+import {Header} from '../../components';
+import {useAppSelector} from "../../hooks";
 
 const MoviesPage = () => {
+    const {isDarkMode} = useAppSelector(state => state.movieReducer);
+
+    document.body.style.background = (isDarkMode ? "#AAAAAA" : '#EEEEEE');
+
     return (
         <div>
             <Header/>
-            {/*<div className={css.header}>*/}
-            {/*    <NavLink to="/">Home</NavLink>*/}
-            {/*    <NavLink to="/users">Users</NavLink>*/}
-            {/*    <NavLink to="/posts">Posts</NavLink>*/}
-            {/*    <NavLink to="/about">About</NavLink>*/}
-            {/*    /!*<button onClick={logout}>LogOut</button>*!/*/}
-            {/*</div>*/}
-            <div className={'d-flex justify-content-evenly bg-secondary bg-opacity-25'}>
-                {/*<div>*/}
-                    <Outlet/>
-                {/*</div>*/}
-                {/*<div className={css.footer}>*/}
-                {/*    @ReactRouterDom*/}
-                {/*</div>*/}
+            <div className={'d-flex justify-content-evenly'}>
+                <Outlet/>
             </div>
         </div>
     );

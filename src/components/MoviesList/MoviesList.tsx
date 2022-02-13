@@ -7,11 +7,8 @@ import {useAppDispatch, useAppSelector} from '../../hooks';
 import {getAllGenres, getAllMovies} from '../../store';
 
 const MoviesList: FC = () => {
-
-    // console.log('MoviesList');
-    const {movies, page, genres, status, error} = useAppSelector(state => state.moviesReducer);
+    const {movies, page, genres, status, error} = useAppSelector(state => state.movieReducer);
     const dispatch = useAppDispatch();
-
     const data = useParams();
 
     useEffect(() => {
@@ -21,12 +18,13 @@ const MoviesList: FC = () => {
 
     return (
         <div className={'d-flex flex-column align-items-center p-4'}>
-            <div
-                className={'d-flex gap-3 flex-wrap justify-content-center mb-5'}>
+
+            <div className={'d-flex gap-3 flex-wrap justify-content-center mb-5'}>
                 {status === 'loading' && <h1><Spinner animation="border"/>Loading...</h1>}
                 {error && <h1>{error}</h1>}
                 {movies && movies.map(movie => <MoviesListCard key={movie.id} movie={movie} genres={genres}/>)}
             </div>
+
             <Paginator/>
         </div>
     );
