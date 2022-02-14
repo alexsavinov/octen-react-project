@@ -1,7 +1,9 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import {Carousel} from 'react-bootstrap';
-import {IVideo} from "../../interfaces";
-import YouTube from "react-youtube";
+import YouTube from 'react-youtube';
+
+import {settings} from '../../constants';
+import {IVideo} from '../../interfaces';
 
 interface IProps {
     videos: IVideo[];
@@ -9,8 +11,7 @@ interface IProps {
 
 const Videos: FC<IProps> = ({videos}) => {
     return (
-
-        <Carousel style={{width: "640px"}} interval={10000}>
+        <Carousel style={{width: settings.widthVideos + 'px'}} interval={settings.intervalForVideos}>
             {videos.slice(0, 5).map(video =>
                 video.site === 'YouTube' &&
                 <Carousel.Item key={video.id}>

@@ -3,11 +3,10 @@ import {Badge, Card} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 import {GenreBadge, StarsRating} from '..';
-import {urls} from '../../constants';
+import {settings, urls} from '../../constants';
 import {IGenre, IMovie} from '../../interfaces';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {setMovieThunk} from '../../store';
-
 
 interface IProps {
     movie: IMovie;
@@ -21,7 +20,7 @@ const MoviesListCard: FC<IProps> = ({movie, genres}) => {
 
     const merged = genre_ids?.map(genreId => genres?.find(el => el.id === genreId));
 
-    let cardStyle = {width: '180px', backgroundColor: 'white', borderColor: 'white'};
+    let cardStyle = {width: settings.widthCard + 'px', backgroundColor: 'white', borderColor: 'white'};
     if (isDarkMode) {
         cardStyle.backgroundColor = 'lightgrey';
         cardStyle.borderColor = 'lightgrey';
@@ -34,7 +33,7 @@ const MoviesListCard: FC<IProps> = ({movie, genres}) => {
                   onClick={() => movie && dispatch(setMovieThunk(movie))}>
                 <Card.Img alt='Card image cap'
                           src={urls.images300 + '/' + poster_path}
-                          style={{width: '180px'}}/>
+                          style={{width: settings.widthCard + 'px'}}/>
             </Link>
 
             <Card.Body className='d-flex flex-column justify-content-between' style={cardStyle}>
@@ -62,7 +61,12 @@ const MoviesListCard: FC<IProps> = ({movie, genres}) => {
                     <div>
                         {vote_average && <StarsRating vote_average={vote_average}/>}
                     </div>
-                    <Badge bg='secondary'>{release_date?.substring(0, 4)}</Badge>
+                    {release_date &&
+                        <Badge bg={isDarkMode ? 'light' : 'dark'}>
+                            <div className={isDarkMode ? 'text-dark' : 'text-light'}>
+                                {release_date.substring(0, 4)}
+                            </div>
+                        </Badge>}
                 </Card.Footer>
             </Card.Body>
 
@@ -70,4 +74,4 @@ const MoviesListCard: FC<IProps> = ({movie, genres}) => {
     );
 };
 
-export {MoviesListCard}
+export {MoviesListCard};

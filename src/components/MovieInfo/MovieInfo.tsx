@@ -3,14 +3,14 @@ import {Spinner} from 'react-bootstrap';
 import {HouseDoor} from 'react-bootstrap-icons';
 import {useParams} from 'react-router-dom';
 
-import {urls} from '../../constants';
 import {Images, Videos} from '../../components';
+import {settings, urls} from '../../constants';
 import {GenreBadge} from '../GenreBadge/GenreBadge';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {getMovie} from '../../store';
 
 const MovieInfo: FC = () => {
-    const {movie, status, error, isDarkMode} = useAppSelector(state => state.movieReducer);
+    const {movie, isDarkMode, status, error} = useAppSelector(state => state.movieReducer);
 
     const dispatch = useAppDispatch();
     const params = useParams();
@@ -39,7 +39,7 @@ const MovieInfo: FC = () => {
                                                   target='_blank'
                                                   className={'d-flex text-decoration-none ms-4 '
                                                       + (isDarkMode ? 'text-light' : 'text-dark')}>
-                                <HouseDoor size={15} className={'align-self-center'}/> Homepage</a>}
+                                <HouseDoor size={settings.sizeHouseDoor} className={'align-self-center'}/> Homepage</a>}
 
                             <div className={'ms-4 mb-2'}>
                                 {movie.genres && movie.genres.map(genre => <GenreBadge key={genre?.id}
